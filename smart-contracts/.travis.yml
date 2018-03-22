@@ -1,0 +1,14 @@
+dist: trusty
+sudo: false
+
+language: node_js
+node_js:
+  - "8"
+
+install:
+  - npm install -g yarn codecov
+  - yarn install
+
+script:
+  - yarn run test-coverage
+  - codecov
