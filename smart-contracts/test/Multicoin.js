@@ -171,13 +171,4 @@ contract('Multicoin', ([admin, user1, user2, user3, user4]) => {
     )
     assertEq(await multicoin.owner(), admin)
   })
-
-  it('transfer when the recipient is the zero address', function () {
-    const to = ZERO_ADDRESS;
-    await assertReverts(multicoin.transfer(to, tokenAmount(100), { from: user1 }))
-  })
-
-  it('transfer when the sender does not have enough balance', function () {
-    const amount = 2001;
-    await assertReverts(multicoin.transfer(user2, tokenNumber(amount), { from: user1 }))
-  })
+})

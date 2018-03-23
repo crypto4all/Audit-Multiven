@@ -95,7 +95,7 @@ contract('MultivenIco', ([oracle, admin, multivenWallet, user1, user2, user3, us
   })
 
   it('rejects a contribution from a non-cleared address', async function () {
-    const paymentAmount = Web3Utils.toWei('0.2', 'ether')
+    const paymentAmount = Web3Utils.toWei('0.001', 'ether')
     await multivenIco.goToNextRound({from: admin})
     assertEq(await multivenIco.currentIcoRound(), 1)
     assertEq(await kycRegistry.isAddressCleared(user2), false)
@@ -104,7 +104,7 @@ contract('MultivenIco', ([oracle, admin, multivenWallet, user1, user2, user3, us
       multivenIco.sendTransaction( { from: user2, value: paymentAmount } )
     )
 
-    assertEq(await multicoin.balanceOf(user2), 0)
+    assertEq(await multicoin.balanceOf(user1), 0)
   })
 
   it('gives the right amount of token on round 1', async function () {
