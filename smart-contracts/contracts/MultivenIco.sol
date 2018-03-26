@@ -67,7 +67,7 @@ contract MultivenIco is Owned, PelikanIco {
     icoRounds[1] = IcoRound(
       100 finney,
       1000 ether,
-      round1Supply*(10**18),
+      round1Supply,
       0,
       125
     );
@@ -75,7 +75,7 @@ contract MultivenIco is Owned, PelikanIco {
     icoRounds[2] = IcoRound(
       100 finney,
       500 ether,
-      round2supply*(10**18),
+      round2supply,
       0,
       120
     );
@@ -83,7 +83,7 @@ contract MultivenIco is Owned, PelikanIco {
     icoRounds[3] = IcoRound(
       100 finney,
       250 ether,
-      round3Supply*(10**18),
+      round3Supply,
       0,
       115
     );
@@ -91,7 +91,7 @@ contract MultivenIco is Owned, PelikanIco {
     icoRounds[4] = IcoRound(
       100 finney,
       50 ether,
-      round4Supply*(10**18),
+      round4Supply,
       0,
       100
     );
@@ -151,7 +151,7 @@ contract MultivenIco is Owned, PelikanIco {
 
   function tokenAmount(uint value, uint bonusAllocation) public constant returns (uint countedAmount, uint givenAmount) {
     // Amount given for book keeping (theorical amount, without bonus)
-    countedAmount = value / tokenPrice * (10**18);
+    countedAmount = value / tokenPrice;
 
     // Real amount given (including bonus)
     givenAmount = countedAmount * bonusAllocation / 100;
@@ -173,7 +173,7 @@ contract MultivenIco is Owned, PelikanIco {
       return withdrawRemainingMulticoins();
     } else {
       // Load next round by giving current round remaining supply to the next round
-      icoRounds[currentIcoRound].supplyAllowed = 
+      icoRounds[currentIcoRound].supplyAllowed =
         icoRounds[currentIcoRound].supplyAllowed.add(remainingSupply);
       return true;
     }

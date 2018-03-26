@@ -1,8 +1,3 @@
-require('dotenv').config()
-
-const HDWalletProvider = require("truffle-hdwallet-provider");
-const mnemonic = process.env.MNEMONIC
-
 module.exports = {
   solc: {
     optimizer: {
@@ -22,23 +17,21 @@ module.exports = {
     ui: 'bdd',
   },
 
-
   networks: {
-    rinkeby: {
-      provider: function() {
-        return new HDWalletProvider(mnemonic, "https://rinkeby.infura.io")
-      },
-      network_id: 4
+    development: {
+      host: "localhost",
+      port: 8545,
+      network_id: "*" // Match any network id
     },
-    ropsten:  {
+     ropsten:  {
      network_id: 3,
      host: "localhost",
-     port:  8546,
+     port:  8545,
      gas:   2900000
-   },
+    }
+  },
    rpc: {
         host: 'localhost',
         post:8080
    }
-  },
 };
