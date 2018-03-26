@@ -29,6 +29,16 @@ module.exports = {
         return new HDWalletProvider(mnemonic, "https://rinkeby.infura.io")
       },
       network_id: 4
-    }
+    },
+    ropsten:  {
+     network_id: 3,
+     host: "localhost",
+     port:  8546,
+     gas:   2900000
+   },
+   rpc: {
+        host: 'localhost',
+        post:8080
+   }
   },
 };
