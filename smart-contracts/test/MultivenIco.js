@@ -109,7 +109,7 @@ contract('MultivenIco', ([oracle, admin, multivenWallet, user1, user2, user3, us
 
   it('gives the right amount of token on round 1', async function () {
     const paymentAmount = Web3Utils.toWei('1', 'ether')
-    const tokenAmount = new BigNumber(paymentAmount).dividedBy(pricePerToken).times('1.25').mul(decimalPrecision)
+    const tokenAmount = new paymentAmount.dividedBy(pricePerToken).times('1.25').mul(decimalPrecision)
 
     await multivenIco.goToNextRound({from: admin})
     assertEq(await multivenIco.currentIcoRound(), 1)
