@@ -7,7 +7,7 @@ import "./lib/PelikanIco.sol";
 import "./lib/KycRegistryInterface.sol";
 
 contract MultivenIco is Owned, PelikanIco {
-  using SafeMath for uint;
+  using SafeMath for uint256;
 
   struct IcoRound {
     uint minContribution;
@@ -67,33 +67,33 @@ contract MultivenIco is Owned, PelikanIco {
     icoRounds[1] = IcoRound(
       100 finney,
       1000 ether,
-      round1Supply,
+      round1Supply*(10**18),
       0,
-      125
+      25
     );
 
     icoRounds[2] = IcoRound(
       100 finney,
       500 ether,
-      round2supply,
+      round2supply*(10**18),
       0,
-      120
+      20
     );
 
     icoRounds[3] = IcoRound(
       100 finney,
       250 ether,
-      round3Supply,
+      round3Supply*(10**18),
       0,
-      115
+      15
     );
 
     icoRounds[4] = IcoRound(
       100 finney,
       50 ether,
-      round4Supply,
+      round4Supply*(10**18),
       0,
-      100
+      1
     );
   }
 
@@ -114,14 +114,14 @@ contract MultivenIco is Owned, PelikanIco {
     (countedAmount, givenAmount) = tokenAmount(msg.value, icoRounds[currentIcoRound].bonusAllocation);
 
     // Anticipate new supply of round
-    uint newSupply = icoRounds[currentIcoRound].supplyDistributed.add(countedAmount);
+    uint newSupply = icoRounds[currentIcoRound].supplyDistributed.add(givenAmount);
 
     // Checks if this supply can be given
     require(newSupply <= icoRounds[currentIcoRound].supplyAllowed);
     icoRounds[currentIcoRound].supplyDistributed = newSupply;
 
     // Add the received value to the total received
-    totalEtherRaised += msg.value;
+    totalEtherRaised = totalEtherRaised.add(msg.value);
 
     // Transfer the value to the holder wallet
     multivenWallet.transfer(msg.value);
@@ -149,12 +149,12 @@ contract MultivenIco is Owned, PelikanIco {
     );
   }
 
-  function tokenAmount(uint value, uint bonusAllocation) public constant returns (uint countedAmount, uint givenAmount) {
+  function tokenAmount(uint256 value, uint256 bonusAllocation) public constant returns (uint countedAmount, uint givenAmount) {
     // Amount given for book keeping (theorical amount, without bonus)
-    countedAmount = value / tokenPrice;
+    countedAmount = (value.div(tokenPrice)).mul(10**18);
 
     // Real amount given (including bonus)
-    givenAmount = countedAmount * bonusAllocation / 100;
+    givenAmount = countedAmount.add(countedAmount.mul(bonusAllocation).div(100));
   }
 
   function goToNextRound() public onlyOwner returns (bool success) {
